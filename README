@@ -1,0 +1,18 @@
+make sure this directory is in your PYTHONPATH
+run python setup.py to install
+
+This is a simple Python/Cython implementation of the core algorithmic ideas in
+"A Simple, Combinatorial Algorithm for Solving SDD Systems in Nearly-Linear Time"
+http://arxiv.org/pdf/1301.6628v1.pdf
+
+This code does not optimize for run time, but instead is meant to count units
+of work involved in the update of cycle flows. This code was used in our
+paper http://arxiv.org/pdf/1505.00875v3.pdf.
+
+We consider 4 different cost metrics for measuring the update of a single cycle.
+1. cycle length
+2. log n
+3. log(cycle length)
+4. 1
+
+This code also does not currently use a theoretically low-stretch spanning tree.
