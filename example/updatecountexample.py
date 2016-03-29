@@ -11,7 +11,7 @@ A=scipy.io.mmread(filename)
         
 T=drkcode.python.degreetree.get_tree(A)
 
-results=drkcode.python.solver.solve(A,tolerance=1e-3,userTree=T,useres=0)
+results=drkcode.python.solver.solve(A,tolerance=1e-6,userTree=T,useres=1,tracker=1)
 
 # O(length cycle) cost per cycle update
 RK_edges=results[0]
@@ -35,6 +35,7 @@ print "O(log(cycle length)) cost per cycle update"
 print RK_log_edges
 print "O(1) cost per cycle update"
 print RK_projections
+
 
 
 
