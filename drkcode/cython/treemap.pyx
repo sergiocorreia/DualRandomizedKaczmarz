@@ -10,26 +10,29 @@ import numpy
 cimport numpy
 import scipy
 
-def treemap(L,
-    numpy.ndarray[numpy.float64_t, ndim=1] data,
-    numpy.ndarray[int, ndim=1] indices,
-    numpy.ndarray[int, ndim=1] indptr):
+cdef extern from "../C/treemap.c":
+    void treemap_c(int *Tindptr,
+                   int *Tindices,
+                   int *row,
+                   int *col,
+                   int *treemap,
+                   int m)
 
-    n=L.shape[0]
+cpdef treemap(L,
+              numpy.ndarray[numpy.float64_t, ndim=1] Tdata,
+              numpy.ndarray[int, ndim=1] Tindices,
+              numpy.ndarray[int, ndim=1] Tindptr):
+
+    cdef int n=L.shape[0]
     mat=scipy.sparse.coo_matrix(scipy.sparse.tril(L,-1))
-    row=mat.row
-    col=mat.col
-    m=len(row)
+    cdef numpy.ndarray[int, ndim=1] row = mat.row
+    cdef numpy.ndarray[int, ndim=1] col = mat.col
+    cdef int m=len(row)
     
-    treemap=scipy.zeros(n-1,dtype=int)
+    cdef numpy.ndarray[int, ndim=1] treemap = numpy.zeros(n-1,dtype=numpy.int32)
     
-    cdef i,j
-    cdef int temp=0
-    for i in range (0,m):
-        for j in xrange(indptr[row[i]],indptr[row[i]+1]):
-            if(indices[j]==col[i]):
-                treemap[temp]=i
-                temp=temp+1
+    
+    treemap_c(&Tindptr[0],&Tindices[0],&row[0],&col[0],&treemap[0],m)
     
     return treemap
     
